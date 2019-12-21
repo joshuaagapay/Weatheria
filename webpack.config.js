@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-var dotenv = require('dotenv').config({path: __dirname + '/.env'});
+var dotenv = require('dotenv').config({ path: __dirname + '/.env' });
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
@@ -29,7 +29,6 @@ module.exports = {
           options: {
             name: "[name].[hash].[ext]"
           }
-
         }
       }
     ]
@@ -40,6 +39,6 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       "process.env": JSON.stringify(dotenv.parsed)
-  }),
+    }),
   ]
 }
