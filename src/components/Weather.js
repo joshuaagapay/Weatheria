@@ -36,18 +36,20 @@ class Weather extends React.Component {
   }
 
   showPosition = (position) => {
-    this.setState({location:{
-      latitude: position.coords.latitude,
-      longitude: position.coords.longitude
-    }})
+    const newLocation = {};
+
+    newLocation.latitude = position.coords.latitude
+    newLocation.longitude = position.coords.longitude
+
+    this.setState({ location: newLocation });
+
     this.props.getWeather(this.state.location.latitude, this.state.location.longitude);
   }
 
   render() {
-    console.log(this.state.location);
     return (
       <div className="weather container">
-        <div className="weather-name"><h2><p>Weatheria</p></h2></div>
+        <div className="weather-name"><h2><p>Weatheria</p></h2></div> 
         <Loader />
         <WeatherDetails />
       </div>
@@ -57,7 +59,7 @@ class Weather extends React.Component {
 
 const mapDispatchtoProps = (dispatch) => {
   return {
-    getWeather: (latitude, longitude) => {dispatch(getWeather(latitude, longitude))}
+    getWeather: (latitude, longitude) => { dispatch(getWeather(latitude, longitude)) }
   }
 }
 
