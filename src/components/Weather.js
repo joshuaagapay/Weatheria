@@ -3,55 +3,23 @@ import Notification from './Notification'
 import WeatherDetails from './WeatherDetails'
 import Loader from './Loader'
 import { connect } from 'react-redux'
-import { getWeather } from '../actions/weatherActions'
+import { getWeather, getLocation } from '../actions/weatherActions'
 
 class Weather extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      // showWeatherDetails: false,
-      // showLoader: true,
-
-      notification: {
-        message: ''
-      },
-
-      location: {
-        latitude: 0,
-        longitude: 0
-      }
-    }
-  }
 
   componentDidMount() {
-    this.getLocation();
-  }
-
-  getLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(this.showPosition);
-    } else {
-      this.setState({ notification: { message: "Geolocation is not supported by this browser." } });
-    }
-  }
-
-  showPosition = (position) => {
-    const newLocation = {};
-
-    newLocation.latitude = position.coords.latitude
-    newLocation.longitude = position.coords.longitude
-
-    this.setState({ location: newLocation });
-
-    this.props.getWeather(this.state.location.latitude, this.state.location.longitude);
+    this.props.getLocation();  
   }
 
   render() {
+    const { location } = this.props;
+    const { data } = this.props;
+    const { showLoader } = this.props;
     return (
       <div className="weather container">
-        <div className="weather-name"><h2><p>Weatheria</p></h2></div> 
-        <Loader />
-        <WeatherDetails />
+        <div className="weather-name"><h2><p>Weatheria</p></h2></div>  
+        <Loader showLoader={showLoader} />
+        <WeatherDetails location={location} data={data} />
       </div>
     )
   }
@@ -59,8 +27,17 @@ class Weather extends React.Component {
 
 const mapDispatchtoProps = (dispatch) => {
   return {
-    getWeather: (latitude, longitude) => { dispatch(getWeather(latitude, longitude)) }
+    getLocation: () => {dispatch(getLocation())}
   }
 }
 
-export default connect(null, mapDispatchtoProps)(Weather)
+const mapStateToProps = state => {
+  console.log(state);
+  return {
+   location: state.location,
+   showLoader: state.showLoader,
+   data: state.data
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchtoProps)(Weather)
