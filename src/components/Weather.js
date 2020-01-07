@@ -7,8 +7,15 @@ import { getWeather, getLocation } from '../actions/weatherActions'
 
 class Weather extends React.Component {
 
+  constructor() {
+    super();
+    this.state = {
+      showWeatherDetails: false
+    }
+  }
+
   componentDidMount() {
-    this.props.getLocation();  
+    this.props.getLocation();
   }
 
   render() {
