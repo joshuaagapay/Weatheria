@@ -2,8 +2,6 @@ import { GET_WEATHER_SUCCESS, GET_WEATHER_FAILED, GET_LOCATION_FAILED, GET_LOCAT
 
 const initState = {
 
-  showLoader: true,
-
   notification: {
     showNotification: false,
     message: ''
@@ -11,7 +9,6 @@ const initState = {
 
   data: {
     result: null,
-    showWeatherDetails: false
   },
 
   location: {
@@ -33,7 +30,6 @@ const rootReducer = (state = initState, action) => {
         ...state,
         data: data,
         location: location,
-        showLoader: false
       }
 
     default:

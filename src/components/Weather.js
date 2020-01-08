@@ -21,12 +21,10 @@ class Weather extends React.Component {
   render() {
     const { location } = this.props;
     const { data } = this.props;
-    const { showLoader } = this.props;
     return (
       <div className="weather container">
         <div className="weather-name"><h2><p>Weatheria</p></h2></div>  
-        <Loader showLoader={showLoader} />
-        <WeatherDetails location={location} data={data} />
+          <WeatherDetails location={location} data={data} />
       </div>
     )
   }
@@ -42,7 +40,6 @@ const mapStateToProps = state => {
   console.log(state);
   return {
    location: state.location,
-   showLoader: state.showLoader,
    data: state.data
   }
 }
