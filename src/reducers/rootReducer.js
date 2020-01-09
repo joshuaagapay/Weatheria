@@ -24,12 +24,18 @@ const rootReducer = (state = initState, action) => {
       location.latitude = action.position.latitude
       location.longitude = action.position.longitude
       
-      const data = Object.assign({}, state.data);
-      data.showWeatherDetails = true
       return {
         ...state,
-        data: data,
         location: location,
+      }
+
+    case GET_WEATHER_SUCCESS:
+      console.log(action);
+      const data = Object.assign({}, state.data);
+      data.result = action.result
+      return {
+        ...state,
+        data: data
       }
 
     default:

@@ -4,10 +4,12 @@ import axios from 'axios'
 const api_key = process.env.API_KEY;
 
 export const getWeather = (latitude, longitude) => {
+  
   const url = `https:\\api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${api_key}`;
   return (dispatch) => {
     axios.get(url).then((response) => {
-      dispatch(getWeatherSuccess(response.json()));
+      
+      dispatch(getWeatherSuccess(response));
     });
   }
 

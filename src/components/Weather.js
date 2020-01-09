@@ -18,13 +18,19 @@ class Weather extends React.Component {
     this.props.getLocation();
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.location !== this.props.location) {
+      const { location } = this.props;
+      this.props.getWeather(location.latitude, location.longitude);
+    }
+  }
+
   render() {
-    const { location } = this.props;
     const { data } = this.props;
     return (
       <div className="weather container">
-        <div className="weather-name"><h2><p>Weatheria</p></h2></div>  
-          <WeatherDetails location={location} data={data} />
+        <div className="weather-name"><h2><p>Weatheria</p></h2></div>
+        <WeatherDetails data={data} />
       </div>
     )
   }
@@ -32,15 +38,15 @@ class Weather extends React.Component {
 
 const mapDispatchtoProps = (dispatch) => {
   return {
-    getLocation: () => {dispatch(getLocation())}
+    getLocation: () => { dispatch(getLocation()) },
+    getWeather : (latitude, longitude) => { dispatch(getWeather(latitude, longitude)) }
   }
 }
 
 const mapStateToProps = state => {
-  console.log(state);
   return {
-   location: state.location,
-   data: state.data
+    location: state.location,
+    data: state.data
   }
 }
 
