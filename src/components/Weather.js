@@ -4,18 +4,26 @@ import WeatherDetails from './WeatherDetails'
 import Loader from './Loader'
 import { connect } from 'react-redux'
 import { getWeather, getLocation } from '../actions/weatherActions'
+import axios from 'axios'
+
 
 class Weather extends React.Component {
 
   constructor() {
-    super();
+    super()
     this.state = {
-      showWeatherDetails: false
+      showWeatherDetails: false,
     }
   }
 
   componentDidMount() {
     this.props.getLocation();
+    const checkRes = setInterval(() => {
+      if (this.props.data.isLoaded) {
+        this.setState({ showWeatherDetails: true });
+        clearInterval(checkRes);
+      }
+    }, 3000)
   }
 
   componentDidUpdate(prevProps) {
@@ -26,11 +34,12 @@ class Weather extends React.Component {
   }
 
   render() {
-    const { data } = this.props;
+    const { result } = this.props.data; 
+    const weather = this.state.showWeatherDetails ? <WeatherDetails data={this.props.data} /> : <Loader />
     return (
       <div className="weather container">
-        <div className="weather-name"><h2><p>Weatheria</p></h2></div>
-        <WeatherDetails data={data} />
+        <div className="weather-name" onClick={this.test}><h2><p>Weatheria</p></h2></div>
+        { weather }
       </div>
     )
   }
@@ -39,7 +48,7 @@ class Weather extends React.Component {
 const mapDispatchtoProps = (dispatch) => {
   return {
     getLocation: () => { dispatch(getLocation()) },
-    getWeather : (latitude, longitude) => { dispatch(getWeather(latitude, longitude)) }
+    getWeather: (latitude, longitude) => { dispatch(getWeather(latitude, longitude)) }
   }
 }
 

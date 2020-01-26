@@ -8,7 +8,8 @@ const initState = {
   },
 
   data: {
-    result: null,
+    result: {},
+    isLoaded: false
   },
 
   location: {
@@ -30,9 +31,9 @@ const rootReducer = (state = initState, action) => {
       }
 
     case GET_WEATHER_SUCCESS:
-      console.log(action);
-      const data = Object.assign({}, state.data);
-      data.result = action.result
+     
+      const data = {...state.data, result:action.result, isLoaded: true};
+    
       return {
         ...state,
         data: data

@@ -1,10 +1,9 @@
 import React from 'react'
 
-class Loader extends React.Component {
-
-  render() {
+function Loader(props) {
+  
     return (
-      <div className="weather-loader" style={{display: this.props.showLoader ? 'block' : 'none'}}>
+      <div className="weather-loader">
         <div className="preloader-wrapper small active">
           <div className="spinner-layer spinner-red-only">
             <div className="circle-clipper left">
@@ -18,7 +17,7 @@ class Loader extends React.Component {
         </div>
       </div>
     )
-  }
+  
 }
 
 export default Loader
