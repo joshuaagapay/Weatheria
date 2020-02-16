@@ -1,10 +1,10 @@
 import React from 'react'
-import Notification from './Notification'
+import ErrorMessage from './ErrorMessage'
 import WeatherDetails from './WeatherDetails'
 import Loader from './Loader'
 import { connect } from 'react-redux'
-import { getWeather, getLocation } from '../actions/weatherActions'
-import axios from 'axios'
+import { getWeather, convertTemp } from '../actions/weatherActions'
+import { getLocation } from '../actions/locationActions'
 
 
 class Weather extends React.Component {
@@ -13,13 +13,14 @@ class Weather extends React.Component {
     super()
     this.state = {
       showWeatherDetails: false,
+      
     }
   }
 
   componentDidMount() {
     this.props.getLocation();
     const checkRes = setInterval(() => {
-      if (this.props.data.isLoaded) {
+      if (this.props.weatherDetails.isLoaded) {
         this.setState({ showWeatherDetails: true });
         clearInterval(checkRes);
       }
@@ -27,19 +28,31 @@ class Weather extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.location !== this.props.location) {
+
+    if (prevProps.location.isLocated !== this.props.location.isLocated) {
       const { location } = this.props;
       this.props.getWeather(location.latitude, location.longitude);
     }
   }
 
   render() {
-    const { result } = this.props.data; 
-    const weather = this.state.showWeatherDetails ? <WeatherDetails data={this.props.data} /> : <Loader />
+    const { error } = this.props.location;
+    const { weatherDetails } = this.props;
+
+    if (error) {
+      return (
+        <div className="weather container">
+          <div className="weather-name"><p>Weatheria</p></div>
+          <ErrorMessage message={error} />
+        </div>
+      )
+    }
+
+    const weather = this.state.showWeatherDetails ? <WeatherDetails data={weatherDetails} convertTemp={this.props.convertTemp} /> : <Loader />
     return (
-      <div className="weather container">
-        <div className="weather-name" onClick={this.test}><h2><p>Weatheria</p></h2></div>
-        { weather }
+      <div className="weather">
+        <div className="weather-name"><p>Weatheria</p></div>
+        {weather}
       </div>
     )
   }
@@ -48,14 +61,16 @@ class Weather extends React.Component {
 const mapDispatchtoProps = (dispatch) => {
   return {
     getLocation: () => { dispatch(getLocation()) },
-    getWeather: (latitude, longitude) => { dispatch(getWeather(latitude, longitude)) }
+    getWeather: (latitude, longitude) => { dispatch(getWeather(latitude, longitude)) },
+    convertTemp : (unit) => { dispatch(convertTemp(unit))}
   }
 }
 
 const mapStateToProps = state => {
+  
   return {
     location: state.location,
-    data: state.data
+    weatherDetails: state.weather
   }
 }
 

@@ -1,4 +1,9 @@
-import { GET_WEATHER_SUCCESS, GET_WEATHER_FAILED, GET_LOCATION_FAILED, GET_LOCATION_SUCCESS } from './types'
+import {
+  FETCH_WEATHER_SUCCESS,
+  FETCH_WEATHER_FAILED,
+  CONVERT_TEMP_TO_FAHRENHEIT,
+  CONVERT_TEMP_TO_CELSIUS
+} from './types'
 
 import axios from 'axios'
 const api_key = process.env.API_KEY;
@@ -10,40 +15,27 @@ export const getWeather = (latitude, longitude) => {
     axios.get(url).then(response => {
       dispatch(getWeatherSuccess(response.data));
     }).catch(error => {
-        console.log(error);
-        return;
+      console.log(error);
+      return;
     })
 
   }
 }
 
-export const getWeatherSuccess = (result) =>{
+export const getWeatherSuccess = (result) => {
   return {
-    type: GET_WEATHER_SUCCESS,
-    result: result
+    type: FETCH_WEATHER_SUCCESS,
+    payload: result
   }
 }
 
-export const getLocation = () => {
-
+export const convertTemp = (unit) => {
   return (dispatch) => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-       if(position) {
-        dispatch({ type: GET_LOCATION_SUCCESS, position: position.coords });
-       } 
-      }, error => {
-        if(error.code === 1){
-          dispatch({ type: GET_LOCATION_FAILED, error: "User denied the request for Geolocation." });
-        }
-      });
+    if (unit === 'C') {
+      dispatch({type: CONVERT_TEMP_TO_FAHRENHEIT, payload: 'F'});
+    }else {
+      dispatch({type: CONVERT_TEMP_TO_CELSIUS, payload: 'C'});
     }
   }
 }
-
-// export const showPosition = (position) => {
-//   return (dispatch) => {
-//     dispatch({ type: GET_LOCATION_SUCCESS, position: position });
-//   }
-// }
 
