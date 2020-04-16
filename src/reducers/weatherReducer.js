@@ -1,4 +1,4 @@
-import { FETCH_WEATHER_SUCCESS, FETCH_WEATHER_FAILED, CONVERT_TEMP_TO_CELSIUS, CONVERT_TEMP_TO_FAHRENHEIT } from '../actions/types'
+import { FETCH_WEATHER_SUCCESS, CONVERT_TEMP_TO_CELSIUS, CONVERT_TEMP_TO_FAHRENHEIT } from '../actions/types'
 
 const initState = {
 
@@ -14,7 +14,6 @@ const initState = {
 }
 
 const weatherReducer = (state = initState, action) => {
-  console.log(action);
   switch (action.type) {
 
     case FETCH_WEATHER_SUCCESS: {

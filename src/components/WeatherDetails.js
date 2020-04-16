@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 function WeatherDetails(props) {
 
@@ -24,6 +25,11 @@ function WeatherDetails(props) {
     </div>
   )
 
+}
+
+WeatherDetails.propTypes = {
+  data: PropTypes.object,
+  convertTemp: PropTypes.func
 }
 
 export default WeatherDetails
